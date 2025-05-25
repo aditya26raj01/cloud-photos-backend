@@ -32,7 +32,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.CUSTOM_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.CUSTOM_AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1 # Change to your desired AWS region
+          aws-region: ap-south-1 # Change to your desired AWS region
 
       - name: Deploy to AWS Lambda
         run: |
