@@ -3,32 +3,37 @@ name: Deploy to AWS Lambda
 on:
   push:
     branches:
-      - main
+      - main # Change this to your default branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v2
         with:
-          node-version: "20"
+          node-version: "22" # Use the Node.js version your project requires
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Build project
-        run: npm run build
+      # - name: Build project
+      #   run: npm run build # Ensure you have a build script in your package.json
 
-      - name: Install Serverless Framework
-        run: npm install -g serverless
+      - name: Zip Lambda function
+        run: zip -r function.zip . -x '*.git*' 'node_modules/*' 'test/*' # Adjust exclusions as needed
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.CUSTOM_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.CUSTOM_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1 # Change to your desired AWS region
 
       - name: Deploy to AWS Lambda
-        run: serverless deploy
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.CUSTOM_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.CUSTOM_AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws lambda update-function-code --function-name s3Uploader --zip-file fileb://function.zip
