@@ -3,8 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import serverless from "serverless-http";
 
-import authRoutes from "./routes/auth.routes";
-import mediaRoutes from "./routes/media.routes";
+import authRoutes from "./src/routes/auth.routes";
+import mediaRoutes from "./src/routes/media.routes";
 
 dotenv.config();
 
