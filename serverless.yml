@@ -1,0 +1,28 @@
+service: auth-service
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: ap-south-1
+  environment:
+    NODE_ENV: production
+    PORT: 4000
+
+functions:
+  app:
+    handler: dist/index.handler
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+
+plugins:
+  - serverless-offline
+
+package:
+  excludeDevDependencies: true
+
+custom:
+  serverless-offline:
+    httpPort: 3000

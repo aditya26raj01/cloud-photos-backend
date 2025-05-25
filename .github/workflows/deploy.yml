@@ -3,37 +3,32 @@ name: Deploy to AWS Lambda
 on:
   push:
     branches:
-      - main # Change this to your default branch
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: "22" # Use the Node.js version your project requires
+          node-version: "20"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      # - name: Build project
-      #   run: npm run build # Ensure you have a build script in your package.json
+      - name: Build project
+        run: npm run build
 
-      - name: Zip Lambda function
-        run: zip -r function.zip . -x '*.git*' 'node_modules/*' 'test/*' # Adjust exclusions as needed
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.CUSTOM_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.CUSTOM_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1 # Change to your desired AWS region
+      - name: Install Serverless Framework
+        run: npm install -g serverless
 
       - name: Deploy to AWS Lambda
-        run: |
-          aws lambda update-function-code --function-name s3Uploader --zip-file fileb://function.zip
+        run: serverless deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.CUSTOM_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CUSTOM_AWS_SECRET_ACCESS_KEY }}

@@ -9,7 +9,6 @@ import mediaRoutes from "./routes/media.routes";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.json());
@@ -21,5 +20,4 @@ app.get("/", (_, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/media", mediaRoutes);
 
-// Export the app wrapped in serverless
-module.exports.handler = serverless(app);
+export const handler = serverless(app); // 🔥 Export Lambda handler
