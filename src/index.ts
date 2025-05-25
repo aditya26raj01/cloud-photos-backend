@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import serverless from "serverless-http";
 
 import authRoutes from "./routes/auth.routes";
 import mediaRoutes from "./routes/media.routes";
@@ -20,6 +21,5 @@ app.get("/", (_, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/media", mediaRoutes);
 
-app.listen(PORT, () => {
-  console.log(`🚀 Auth Service running on http://localhost:${PORT}`);
-});
+// Export the app wrapped in serverless
+module.exports.handler = serverless(app);
