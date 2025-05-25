@@ -21,8 +21,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build project
-        run: npm run build # Ensure you have a build script in your package.json
+      # - name: Build project
+      #   run: npm run build # Ensure you have a build script in your package.json
 
       - name: Zip Lambda function
         run: zip -r function.zip . -x '*.git*' 'node_modules/*' 'test/*' # Adjust exclusions as needed
