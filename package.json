@@ -5,9 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --respawn --transpile-only index.ts",
-    "deploy": "zip -r function.zip . -x '*.git*' 'node_modules/*' 'test/*' && aws lambda update-function-code --function-name s3Uploader --zip-file fileb://function.zip"
+    "deploy": "serverless deploy"
   },
   "keywords": [],
   "author": "",
